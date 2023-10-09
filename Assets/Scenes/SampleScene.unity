@@ -375,7 +375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b1f34e9deddf074a91c1290c2f405ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraRotationSpeed: 90
+  cameraRotationSpeed: 360
   cameraDistance: 10
   rotateCameraLeft: 97
   rotateCameraRight: 100
@@ -653,8 +653,24 @@ MonoBehaviour:
   rotationAnimationTime: 0.1
   rotateClockwise: 108
   rotateCounterClockwise: 107
+  orangeSidePoint: {x: 0, y: 0, z: 0}
+  greenSidePoint: {x: 0, y: 0, z: 0}
+  orangeSideRotationAxis: {x: 0, y: 0, z: 0}
+  greenSideRotationAxis: {x: 0, y: 0, z: 0}
+  redSideRotationAxis: {x: 0, y: 0, z: 0}
+  blueSideRotationAxis: {x: 0, y: 0, z: 0}
+  whiteSideRotationAxis: {x: 0, y: 0, z: 0}
+  yellowSideRotationAxis: {x: 0, y: 0, z: 0}
+  totalNumberOfCubes: 0
+  canRotate: 1
   numberOfShuffles: 0
   canvas: {fileID: 0}
+  cameraBlueSidePosition: {x: 1, y: 1, z: -8}
+  cameraGreenSidePosition: {x: 1, y: 1, z: 10}
+  cameraOrangeSidePosition: {x: -8, y: 1, z: 1}
+  cameraRedSidePosition: {x: 10, y: 1, z: 1}
+  cameraWhiteSidePosition: {x: 1, y: -8, z: 1}
+  cameraYellowSidePosition: {x: 1, y: 10, z: 1}
   sphereMaterial: {fileID: 2100000, guid: c8b9c37ef0f4ed64998c93a5cbe7a81e, type: 2}
 --- !u!4 &1721888002
 Transform:
