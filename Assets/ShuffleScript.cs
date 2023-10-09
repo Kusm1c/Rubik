@@ -12,6 +12,8 @@ public class ShuffleScript
 
     public void Shuffle(int shuffleCount)
     {
+        cubeMainScript.isShuffling = true;
+        cubeMainScript.gameStarted = false;
         cubeMainScript.StartCoroutine((IEnumerator)ShuffleCoroutine(shuffleCount));
     }
 
@@ -52,5 +54,7 @@ public class ShuffleScript
             yield return new WaitForSeconds(cubeMainScript.rotationAnimationTime + cubeMainScript.rotationAnimationTime / 2);
             cubeMainScript.RotateSide1.SnapAllCubes();
         }
+        cubeMainScript.isShuffling = false;
+        cubeMainScript.hasBeenShuffled = true;
     }
 }

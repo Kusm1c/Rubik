@@ -73,20 +73,38 @@ public class Cube : MonoBehaviour
     }
     private void Start()
     {
+        if (!PlayerPrefs.HasKey("BestTime"))
+        {
+            PlayerPrefs.SetFloat(" BestTime", 0);
+        }
+
         cubeSpawner.CreateCube();
         MakeSkyBox.InvertedNormalSphere();
         SettersScript.SetCameraSidePositions();
-        ShuffleScript.Shuffle(numberOfShuffles);
         ResetChronometer();
     }
     
+    public bool hasBeenShuffled = false;
+    public bool isShuffling = false;
+    public bool gameStarted = false;
+    public int numberOfMovesInSolution = 0;
     void Update()
     {
+        numberOfMovesInSolution = Solver.solutionMoves.Count;
+        if (isShuffling) return;
+        if (!hasBeenShuffled)
+        {
+            StartNewGame();
+            return;
+        }
         Solver.PlayerSideRotation();
         UpdateChronometer();
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            Solver.SolveCube();
+        }
         
-        StartNewGame();
-        
+        if (!gameStarted) return;
         if (IsSolved())
         {
             StopChronometer();
@@ -94,6 +112,8 @@ public class Cube : MonoBehaviour
             {
                 UpdateBestTime();
             }
+            hasBeenShuffled = false;
+            gameStarted = false;
         }
     }
 
@@ -101,21 +121,17 @@ public class Cube : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            cubeSpawner.DestroyCube();
-            cubeSpawner.CreateCube();
+            if (!IsSolved())
+            {
+                cubeSpawner.DestroyCube();
+                cubeSpawner.CreateCube();
+            }
             SettersScript.SetCameraSidePositions();
             ShuffleScript.Shuffle(numberOfShuffles);
             ResetChronometer();
             gaveUp = false;
         }
     }
-
-    #region Solver
-    public void SolveButton()
-    {
-        Solver.SolveCube();
-    }
-    #endregion
 
     private readonly Solver solver;
     private readonly MakeSkyBox makeSkyBox;

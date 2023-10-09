@@ -64,6 +64,7 @@ public class Solver
             {
                 cubeMainScript.StartChronometer();
                 cubeMainScript.isChronometerRunning = true;
+                cubeMainScript.gameStarted = true;
             }
             cubeMainScript.RotateSide1.RotateCurrentSideClockwise();
         }
@@ -73,6 +74,7 @@ public class Solver
             {
                 cubeMainScript.StartChronometer();
                 cubeMainScript.isChronometerRunning = true;
+                cubeMainScript.gameStarted = true;
             }
             cubeMainScript.RotateSide1.RotateCurrentSideCounterClockwise();
         }
