@@ -27,7 +27,6 @@ public class CameraControl : MonoBehaviour
     {
         SetCameraPosition();
         cameraCurrentSide = Cube.instance.GetCameraCurrentSide(transform.position);
-        Debug.Log(cameraCurrentSide);
     }
     
     //lets make the camera rotate around the cube from a side to another in one press
@@ -79,11 +78,31 @@ public class CameraControl : MonoBehaviour
 
     private void SnapCameraToSide()
     {
+        transform.position = FindClosestSide();
         
         transform.rotation = Quaternion.Euler(
             Mathf.Round(transform.rotation.eulerAngles.x / 90f) * 90f,
             Mathf.Round(transform.rotation.eulerAngles.y / 90f) * 90f,
             Mathf.Round(transform.rotation.eulerAngles.z / 90f) * 90f);
+    }
+
+    private Vector3 FindClosestSide()
+    {
+        //the sides are cube.instance.cameraBlueSidePosition etc
+        
+        float closestDistance = Mathf.Infinity;
+        Vector3 closestSide = Vector3.zero;
+        foreach (var side in Cube.instance.cameraSidesPositions)
+        {
+            float distance = Vector3.Distance(transform.position, side);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestSide = side;
+            }
+        }
+        
+        return closestSide;
     }
 
 

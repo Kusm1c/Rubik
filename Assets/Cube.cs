@@ -12,11 +12,11 @@ public class Cube : MonoBehaviour
 
     public float rotationAnimationTime = 0.5f;
 
-    [SerializeField] KeyCode rotateClockwise = KeyCode.E;
-    [SerializeField] KeyCode rotateCounterClockwise = KeyCode.Q;
+    [SerializeField] public KeyCode rotateClockwise = KeyCode.E;
+    [SerializeField] public KeyCode rotateCounterClockwise = KeyCode.Q;
 
-    Vector3 orangeSidePoint;
-    Vector3 greenSidePoint;
+    public Vector3 orangeSidePoint;
+    public Vector3 greenSidePoint;
     Vector3 redSidePoint;
     Vector3 blueSidePoint;
     Vector3 whiteSidePoint;
@@ -25,15 +25,15 @@ public class Cube : MonoBehaviour
     public CubeState cubeState = new();
     public CubeState solvedCubeState = new();
 
-    [SerializeField] private Vector3 orangeSideRotationAxis;
+    [SerializeField] public Vector3 orangeSideRotationAxis;
     [SerializeField] private Vector3 greenSideRotationAxis;
     [SerializeField] private Vector3 redSideRotationAxis;
     [SerializeField] private Vector3 blueSideRotationAxis;
     [SerializeField] private Vector3 whiteSideRotationAxis;
     [SerializeField] private Vector3 yellowSideRotationAxis;
 
-    int totalNumberOfCubes;
-    bool canRotate = true;
+    public int totalNumberOfCubes;
+    public bool canRotate = true;
 
     public int numberOfShuffles = 10;
 
@@ -42,8 +42,6 @@ public class Cube : MonoBehaviour
     public Canvas canvas;
 
     public static Cube instance;
-
-    public List<string[]> solutionMoves = new();
 
     private void Awake()
     {
@@ -54,15 +52,60 @@ public class Cube : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+
+
+    void Update()
+    {
+           PlayerSideRotation();
+    }
+
+    string cameraCurrentSide;
+
+    public Vector3 GetSideRotationAxis(string side)
+    {
+        switch (side)
+        {
+            case "Orange":
+                return orangeSideRotationAxis;
+            case "Green":
+                return greenSideRotationAxis;
+            case "Red":
+                return redSideRotationAxis;
+            case "Blue":
+                return blueSideRotationAxis;
+            case "White":
+                return whiteSideRotationAxis;
+            case "Yellow":
+                return yellowSideRotationAxis;
+        }
+
+        return Vector3.zero;
+    }
+
+    private void SetMiddleOfSides()
+    {
+    }
+
+    public Vector3 cameraBlueSidePosition = new(1f, 1f, -8);
+    public Vector3 cameraGreenSidePosition = new(1f, 1f, 10);
+    public Vector3 cameraOrangeSidePosition = new(-8, 1f, 1f);
+    public Vector3 cameraRedSidePosition = new(10, 1f, 1f);
+    public Vector3 cameraWhiteSidePosition = new(1f, -8, 1f);
+    public Vector3 cameraYellowSidePosition = new(1f, 10, 1f);
+
+    private int optimizationCount = 0;
+    public IEnumerable<Vector3> cameraSidesPositions;
+    private Cube cube1;
+    [SerializeField] private Material sphereMaterial;
+
+    private void Start()
     {
         CreateCube();
         InvertedNormalSphere();
         totalNumberOfCubes = transform.childCount;
+        SetCameraSidePositions();
         Shuffle(numberOfShuffles);
     }
-
-    [SerializeField] private Material sphereMaterial;
 
     private void InvertedNormalSphere()
     {
@@ -71,7 +114,6 @@ public class Cube : MonoBehaviour
         sphere.transform.localScale = new Vector3(30, 30, 30);
         sphere.transform.rotation = Quaternion.Euler(0, 0, 0);
         sphere.GetComponent<MeshRenderer>().material = sphereMaterial;
-        //invert normals
         Mesh mesh = sphere.GetComponent<MeshFilter>().mesh;
         Vector3[] normals = mesh.normals;
         for (int i = 0; i < normals.Length; i++)
@@ -81,7 +123,6 @@ public class Cube : MonoBehaviour
 
         mesh.normals = normals;
 
-        //invert triangles
         for (int i = 0; i < mesh.subMeshCount; i++)
         {
             int[] triangles = mesh.GetTriangles(i);
@@ -140,44 +181,56 @@ public class Cube : MonoBehaviour
 
     public void RotateOrangeSide(bool clockWise)
     {
+        if (!canRotate) return;
+        canRotate = false;
         RotateSide(cubeState.OrangeSideCubes, orangeSidePoint, clockWise ? 90 : -90, orangeSideRotationAxis);
         cubeState.RotateOrangeSide(clockWise);
-        solutionMoves.Add(new[] { "Orange", clockWise ? "Clockwise" : "CounterClockwise" });
+           solutionMoves.Add(new[] { "Orange", clockWise ? "Clockwise" : "CounterClockwise" });
     }
 
     public void RotateGreenSide(bool clockWise)
     {
+        if (!canRotate) return;
+        canRotate = false;
         RotateSide(cubeState.GreenSideCubes, greenSidePoint, clockWise ? 90 : -90, greenSideRotationAxis);
         cubeState.RotateGreenSide(clockWise);
-        solutionMoves.Add(new[] { "Green", clockWise ? "Clockwise" : "CounterClockwise" });
+           solutionMoves.Add(new[] { "Green", clockWise ? "Clockwise" : "CounterClockwise" });
     }
 
     public void RotateRedSide(bool clockWise)
     {
+        if (!canRotate) return;
+        canRotate = false;
         RotateSide(cubeState.RedSideCubes, redSidePoint, clockWise ? 90 : -90, redSideRotationAxis);
         cubeState.RotateRedSide(clockWise);
-        solutionMoves.Add(new[] { "Red", clockWise ? "Clockwise" : "CounterClockwise" });
+           solutionMoves.Add(new[] { "Red", clockWise ? "Clockwise" : "CounterClockwise" });
     }
 
     public void RotateBlueSide(bool clockWise)
     {
+        if (!canRotate) return;
+        canRotate = false;
         RotateSide(cubeState.BlueSideCubes, blueSidePoint, clockWise ? 90 : -90, blueSideRotationAxis);
         cubeState.RotateBlueSide(clockWise);
-        solutionMoves.Add(new[] { "Blue", clockWise ? "Clockwise" : "CounterClockwise" });
+           solutionMoves.Add(new[] { "Blue", clockWise ? "Clockwise" : "CounterClockwise" });
     }
 
     public void RotateWhiteSide(bool clockWise)
     {
+        if (!canRotate) return;
+        canRotate = false;
         RotateSide(cubeState.WhiteSideCubes, whiteSidePoint, clockWise ? 90 : -90, whiteSideRotationAxis);
         cubeState.RotateWhiteSide(clockWise);
-        solutionMoves.Add(new[] { "White", clockWise ? "Clockwise" : "CounterClockwise" });
+           solutionMoves.Add(new[] { "White", clockWise ? "Clockwise" : "CounterClockwise" });
     }
 
     public void RotateYellowSide(bool clockWise)
     {
+        if (!canRotate) return;
+        canRotate = false;
         RotateSide(cubeState.YellowSideCubes, yellowSidePoint, clockWise ? 90 : -90, yellowSideRotationAxis);
         cubeState.RotateYellowSide(clockWise);
-        solutionMoves.Add(new[] { "Yellow", clockWise ? "Clockwise" : "CounterClockwise" });
+           solutionMoves.Add(new[] { "Yellow", clockWise ? "Clockwise" : "CounterClockwise" });
     }
 
     public void SnapAllCubes()
@@ -199,17 +252,9 @@ public class Cube : MonoBehaviour
         StartCoroutine(RotateSideCoroutine(sideCubes, rotationAxis, rotationAngle, rotationPoint));
     }
 
-
     private IEnumerator RotateSideCoroutine(List<GameObject> sideCubes, Vector3 rotationAxis, float rotationAngle,
         Vector3 rotationPoint)
     {
-        //rotate cubes animation
-        if (!canRotate)
-        {
-            yield break;
-        }
-
-        canRotate = false;
         float time = 0;
         while (time < rotationAnimationTime)
         {
@@ -236,8 +281,8 @@ public class Cube : MonoBehaviour
         }
 
         UpdateSideCubes();
-        canRotate = true;
         yield return null;
+        canRotate = true;
     }
 
     private void UpdateSideCubes()
@@ -246,35 +291,12 @@ public class Cube : MonoBehaviour
         SetCubeInsideLists();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void RotateCurrentSideClockwise()
     {
-        PlayerSideRotation();
-    }
-
-    string cameraCurrentSide;
-
-    private void PlayerSideRotation()
-    {
-        // Check for user input to rotate the cube sides
-        if (Input.GetKeyDown(rotateClockwise))
-        {
-            RotateCurrentSideClockwise();
-        }
-        else if (Input.GetKeyDown(rotateCounterClockwise))
-        {
-            RotateCurrentSideCounterClockwise();
-        }
-    }
-
-    private void RotateCurrentSideClockwise()
-    {
-        // Get the current side based on the camera's position
         string currentSide = GetCameraCurrentSide(Camera.main.transform.position);
 
         switch (currentSide)
         {
-            // Rotate the corresponding side clockwise
             case "Blue":
                 RotateBlueSide(clockWise: true);
                 break;
@@ -296,14 +318,12 @@ public class Cube : MonoBehaviour
         }
     }
 
-    private void RotateCurrentSideCounterClockwise()
+    public void RotateCurrentSideCounterClockwise()
     {
-        // Get the current side based on the camera's position
         string currentSide = GetCameraCurrentSide(Camera.main.transform.position);
 
         switch (currentSide)
         {
-            // Rotate the corresponding side counterclockwise
             case "Blue":
                 RotateBlueSide(clockWise: false);
                 break;
@@ -454,76 +474,62 @@ public class Cube : MonoBehaviour
         }
     }
 
-    public Vector3 GetSideRotationAxis(string side)
-    {
-        switch (side)
-        {
-            case "Orange":
-                return orangeSideRotationAxis;
-            case "Green":
-                return greenSideRotationAxis;
-            case "Red":
-                return redSideRotationAxis;
-            case "Blue":
-                return blueSideRotationAxis;
-            case "White":
-                return whiteSideRotationAxis;
-            case "Yellow":
-                return yellowSideRotationAxis;
-        }
-
-        return Vector3.zero;
-    }
-
-    private void SetMiddleOfSides()
-    {
-    }
-
-    public Vector3 cameraBlueSidePosition = new (1f, 1f, -8);
-    public Vector3 cameraGreenSidePosition = new (1f, 1f, 10);
-    public Vector3 cameraOrangeSidePosition = new (-8, 1f, 1f);
-    public Vector3 cameraRedSidePosition = new (10, 1f, 1f);
-    public Vector3 cameraWhiteSidePosition = new (1f, -8, 1f);
-    public Vector3 cameraYellowSidePosition = new (1f, 10, 1f);
     public string GetCameraCurrentSide(Vector3 cameraPosition)
     {
-        if (cameraPosition == cameraBlueSidePosition)
+        if (IsCameraAtSide(cameraPosition, cameraBlueSidePosition))
         {
             return "Blue";
         }
-        if (cameraPosition == cameraGreenSidePosition)
+
+        if (IsCameraAtSide(cameraPosition, cameraGreenSidePosition))
         {
             return "Green";
         }
-        if (cameraPosition == cameraOrangeSidePosition)
+
+        if (IsCameraAtSide(cameraPosition, cameraOrangeSidePosition))
         {
             return "Orange";
         }
-        if (cameraPosition == cameraRedSidePosition)
+
+        if (IsCameraAtSide(cameraPosition, cameraRedSidePosition))
         {
             return "Red";
         }
-        if (cameraPosition == cameraWhiteSidePosition)
+
+        if (IsCameraAtSide(cameraPosition, cameraWhiteSidePosition))
         {
             return "White";
         }
-        if (cameraPosition == cameraYellowSidePosition)
+
+        if (IsCameraAtSide(cameraPosition, cameraYellowSidePosition))
         {
             return "Yellow";
         }
+
         return null;
     }
 
-    private int optimizationCount = 0;
-
-    public void SolveCube()
+    private bool IsCameraAtSide(Vector3 cameraPosition, Vector3 vector3)
     {
-        Stack<string[]> movements = new();
-        movements = OptimizeSolution();
-        StartCoroutine(SolveCubeCoroutine(movements));
+        return cameraPosition.x >= vector3.x - 1 && cameraPosition.x <= vector3.x + 1 &&
+               cameraPosition.y >= vector3.y - 1 && cameraPosition.y <= vector3.y + 1 &&
+               cameraPosition.z >= vector3.z - 1 && cameraPosition.z <= vector3.z + 1;
     }
 
-    private IEnumerator SolveCubeCoroutine(Stack<string[]> movements)
+    private void SetCameraSidePositions()
+    {
+        cameraSidesPositions = new List<Vector3>()
+        {
+            cameraBlueSidePosition,
+            cameraGreenSidePosition,
+            cameraOrangeSidePosition,
+            cameraRedSidePosition,
+            cameraWhiteSidePosition,
+            cameraYellowSidePosition
+        };
+    }
+
+    public IEnumerator SolveCubeCoroutine(Stack<string[]> movements)
     {
         if (movements == null)
         {
@@ -559,7 +565,26 @@ public class Cube : MonoBehaviour
             SnapAllCubes();
         }
 
-        solutionMoves.Clear();
+           solutionMoves.Clear();
+    }
+    public List<string[]> solutionMoves = new();
+    public void PlayerSideRotation()
+    {
+        if (Input.GetKeyDown(rotateClockwise))
+        {
+            RotateCurrentSideClockwise();
+        }
+        else if (Input.GetKeyDown(rotateCounterClockwise))
+        {
+              RotateCurrentSideCounterClockwise();
+        }
+    }
+
+    public void SolveCube()
+    {
+        Stack<string[]> movements = new();
+        movements = OptimizeSolution();
+        StartCoroutine(  SolveCubeCoroutine(movements));
     }
 
     private Stack<string[]> OptimizeSolution()
@@ -574,17 +599,15 @@ public class Cube : MonoBehaviour
                 continue;
             }
 
-            //if the same move is repeated 4 times, it is the same as not doing it at all
             if (i < solutionMoves.Count - 3 &&
                 solutionMoves[i][0] == solutionMoves[i + 1][0] &&
                 solutionMoves[i + 1][0] == solutionMoves[i + 2][0] &&
                 solutionMoves[i + 2][0] == solutionMoves[i + 3][0])
             {
-                i += 4;
+                i += 3;
                 continue;
             }
 
-            //if the same move is repeated 3 times, reverse the direction of one of them and remove the other 2
             if (i < solutionMoves.Count - 2 &&
                 solutionMoves[i][0] == solutionMoves[i + 1][0] &&
                 solutionMoves[i + 1][0] == solutionMoves[i + 2][0])
