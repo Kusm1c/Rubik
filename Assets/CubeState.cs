@@ -157,6 +157,23 @@ public class CubeState
             return hash;
         }
     }
+
+    public bool IsSolved()
+    {
+        foreach (var side in sideNames)
+        {
+            List<GameObject> sideCubes = GetSideByIndex((int)side);
+            for (int i = 0; i < sideCubes.Count; i++)
+            {
+                if (sideCubes[i].transform.position != Cube.instance.solvedCubeState.GetSideByIndex((int)side)[i].transform.position)
+                {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
 }
 
 public enum SideName

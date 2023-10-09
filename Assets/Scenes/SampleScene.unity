@@ -650,11 +650,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rubickCubeSingleCube: {fileID: 2759839719447909940, guid: d57d418ff721a0f4e919ad63bcc8ab23,
     type: 3}
+  sideLength: 3
   rotationAnimationTime: 0.1
   rotateClockwise: 108
   rotateCounterClockwise: 107
   orangeSidePoint: {x: 0, y: 0, z: 0}
   greenSidePoint: {x: 0, y: 0, z: 0}
+  redSidePoint: {x: 0, y: 0, z: 0}
+  blueSidePoint: {x: 0, y: 0, z: 0}
+  whiteSidePoint: {x: 0, y: 0, z: 0}
+  yellowSidePoint: {x: 0, y: 0, z: 0}
   orangeSideRotationAxis: {x: 0, y: 0, z: 0}
   greenSideRotationAxis: {x: 0, y: 0, z: 0}
   redSideRotationAxis: {x: 0, y: 0, z: 0}
@@ -772,7 +777,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1721888001}
         m_TargetAssemblyTypeName: Cube, Assembly-CSharp
-        m_MethodName: SolveCube
+        m_MethodName: SolveButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
