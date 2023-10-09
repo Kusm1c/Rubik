@@ -176,7 +176,7 @@ public class KeyboardLayout : MonoBehaviour
         }
         
         // when the user releases a key, we want to unhighlight the corresponding key on the keyboard layout
-        if (Input.GetKeyUp(KeyCode.A))
+        if (Input.GetKeyUp(KeyCode.Q))
         {
             transform.Find("CameraCounterClockwiseKey").GetComponent<Image>().color = Color.white;
         }
