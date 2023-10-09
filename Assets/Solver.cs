@@ -83,6 +83,7 @@ public class Solver
     public void SolveCube()
     {
         cubeMainScript.gaveUp = true;
+        if (!cubeMainScript.gameStarted) cubeMainScript.gameStarted = true;
         Stack<string[]> movements = new();
         movements = OptimizeSolution();
         cubeMainScript.StartCoroutine(SolveCubeCoroutine(movements));
