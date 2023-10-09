@@ -11,7 +11,6 @@ public class Solver
     private readonly RotateSideScript rotateSideScript;
     private readonly SettersScript settersScript;
     private readonly GettersScript gettersScript;
-
     public Solver(Cube cubeMainScript)
     {
         this.cubeMainScript = cubeMainScript;
@@ -54,6 +53,7 @@ public class Solver
         }
 
         solutionMoves.Clear();
+        movements.Clear();
     }
 
     public void PlayerSideRotation()
@@ -94,36 +94,46 @@ public class Solver
         List<string[]> movements = new List<string[]>();
         for (int i = 0; i < solutionMoves.Count; i++)
         {
+            if (i == solutionMoves.Count - 1)
+            {
+                movements.Add(solutionMoves[i]);
+                continue;
+            }
+            
             if (i < solutionMoves.Count - 1 && solutionMoves[i][0] == solutionMoves[i + 1][0] &&
                 solutionMoves[i][1] != solutionMoves[i + 1][1])
             {
-                i += 2;
+                i ++;
+                Debug.Log("Removed 2 moves");
                 continue;
             }
 
+            //if the same move has been made 4 times in a row on the same side, remove the 4 moves
             if (i < solutionMoves.Count - 3 &&
-                solutionMoves[i][0] == solutionMoves[i + 1][0] &&
-                solutionMoves[i + 1][0] == solutionMoves[i + 2][0] &&
-                solutionMoves[i + 2][0] == solutionMoves[i + 3][0])
+                solutionMoves[i][0][0] == solutionMoves[i + 1][0][0] &&
+                solutionMoves[i + 1][0][0] == solutionMoves[i + 2][0][0] &&
+                solutionMoves[i + 2][0][0] == solutionMoves[i + 3][0][0])
             {
+                Debug.Log("Removed 4 moves");
                 i += 3;
                 continue;
             }
 
+            //if the same move has been made 3 times in a row on the same side, remove the 3 moves and add the opposite move
             if (i < solutionMoves.Count - 2 &&
-                solutionMoves[i][0] == solutionMoves[i + 1][0] &&
-                solutionMoves[i + 1][0] == solutionMoves[i + 2][0])
+                solutionMoves[i][0][0] == solutionMoves[i + 1][0][0] &&
+                solutionMoves[i + 1][0][0] == solutionMoves[i + 2][0][0])
             {
-                movements.Add(new[]
-                    { solutionMoves[i][0], solutionMoves[i][1] == "Clockwise" ? "CounterClockwise" : "Clockwise" });
+                Debug.Log("Removed 3 moves");
                 i += 2;
+                movements.Add(new[] { solutionMoves[i][0], solutionMoves[i][1] == "Clockwise" ? "CounterClockwise" : "Clockwise" });
                 continue;
             }
 
             if (i < solutionMoves.Count)
                 movements.Add(solutionMoves[i]);
         }
-
+        Debug.Log("Solution optimized with " + (solutionMoves.Count - movements.Count) + " less moves");
         return ConvertSolutionToMovements(InvertSolution(movements));
     }
 

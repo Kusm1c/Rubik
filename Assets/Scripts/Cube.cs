@@ -48,6 +48,8 @@ public class Cube : MonoBehaviour
     public SettersScript SettersScript => settersScript;
 
     public GettersScript GettersScript => gettersScript;
+    
+    public KeyboardLayout KeyboardLayout => keyboardLayout;
 
     public Solver Solver => solver;
     string cameraCurrentSide;
@@ -58,6 +60,7 @@ public class Cube : MonoBehaviour
     public Vector3 cameraRedSidePosition = new(10, 1f, 1f);
     public Vector3 cameraWhiteSidePosition = new(1f, -8, 1f);
     public Vector3 cameraYellowSidePosition = new(1f, 10, 1f);
+    public string[] sides;
 
     private int optimizationCount = 0;
     public IEnumerable<Vector3> cameraSidesPositions;
@@ -114,6 +117,7 @@ public class Cube : MonoBehaviour
             }
             hasBeenShuffled = false;
             gameStarted = false;
+            Solver.solutionMoves.Clear();
         }
     }
 
@@ -140,6 +144,7 @@ public class Cube : MonoBehaviour
     private readonly SettersScript settersScript;
     private readonly GettersScript gettersScript;
     private readonly CubeSpawner cubeSpawner;
+    private readonly KeyboardLayout keyboardLayout;
 
     public Cube()
     {
@@ -150,6 +155,7 @@ public class Cube : MonoBehaviour
         gettersScript = new GettersScript(this);
         solver = new Solver(this);
         cubeSpawner = new CubeSpawner(this);
+        keyboardLayout = new KeyboardLayout(this);
     }
 
     #region Chronometer

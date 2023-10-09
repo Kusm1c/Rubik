@@ -5,9 +5,9 @@ public class CubeSpawner
 {
     private Cube cubeMainScript;
 
-    public CubeSpawner(Cube cube1)
+    public CubeSpawner(Cube cubeMainScript)
     {
-        cubeMainScript = cube1;
+        this.cubeMainScript = cubeMainScript;
     }
 
     public void CreateCube()
