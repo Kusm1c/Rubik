@@ -11,10 +11,10 @@ public class Cube : MonoBehaviour
     int sideLength = 3;
 
     public float rotationAnimationTime = 0.5f;
-    
+
     [SerializeField] KeyCode rotateClockwise = KeyCode.E;
     [SerializeField] KeyCode rotateCounterClockwise = KeyCode.Q;
-    
+
     Vector3 orangeSidePoint;
     Vector3 greenSidePoint;
     Vector3 redSidePoint;
@@ -24,26 +24,27 @@ public class Cube : MonoBehaviour
 
     public CubeState cubeState = new();
     public CubeState solvedCubeState = new();
-    
-    Vector3 orangeSideRotationAxis;
-    Vector3 greenSideRotationAxis;
-    Vector3 redSideRotationAxis;
-    Vector3 blueSideRotationAxis;
-    Vector3 whiteSideRotationAxis;
-    Vector3 yellowSideRotationAxis;
-    
+
+    [SerializeField] private Vector3 orangeSideRotationAxis;
+    [SerializeField] private Vector3 greenSideRotationAxis;
+    [SerializeField] private Vector3 redSideRotationAxis;
+    [SerializeField] private Vector3 blueSideRotationAxis;
+    [SerializeField] private Vector3 whiteSideRotationAxis;
+    [SerializeField] private Vector3 yellowSideRotationAxis;
+
     int totalNumberOfCubes;
     bool canRotate = true;
-    
+
     public int numberOfShuffles = 10;
 
     public List<int[]> movementsSolution = new();
-    
+
     public Canvas canvas;
-    
+
     public static Cube instance;
-    
+
     public List<string[]> solutionMoves = new();
+
     private void Awake()
     {
         if (instance == null)
@@ -51,6 +52,7 @@ public class Cube : MonoBehaviour
             instance = this;
         }
     }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -59,7 +61,9 @@ public class Cube : MonoBehaviour
         totalNumberOfCubes = transform.childCount;
         Shuffle(numberOfShuffles);
     }
+
     [SerializeField] private Material sphereMaterial;
+
     private void InvertedNormalSphere()
     {
         GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -74,8 +78,9 @@ public class Cube : MonoBehaviour
         {
             normals[i] = -normals[i];
         }
+
         mesh.normals = normals;
-        
+
         //invert triangles
         for (int i = 0; i < mesh.subMeshCount; i++)
         {
@@ -84,11 +89,12 @@ public class Cube : MonoBehaviour
             {
                 (triangles[j], triangles[j + 1]) = (triangles[j + 1], triangles[j]);
             }
+
             mesh.SetTriangles(triangles, i);
         }
     }
 
-    private void Shuffle (int shuffleCount)
+    private void Shuffle(int shuffleCount)
     {
         StartCoroutine(ShuffleCoroutine(shuffleCount));
     }
@@ -126,51 +132,52 @@ public class Cube : MonoBehaviour
 
                     break;
             }
-            yield return new WaitForSeconds(rotationAnimationTime + rotationAnimationTime/2);
+
+            yield return new WaitForSeconds(rotationAnimationTime + rotationAnimationTime / 2);
             SnapAllCubes();
         }
     }
-    
+
     public void RotateOrangeSide(bool clockWise)
     {
         RotateSide(cubeState.OrangeSideCubes, orangeSidePoint, clockWise ? 90 : -90, orangeSideRotationAxis);
         cubeState.RotateOrangeSide(clockWise);
-        solutionMoves.Add(new[] {"Orange", clockWise ? "Clockwise" : "CounterClockwise"});
+        solutionMoves.Add(new[] { "Orange", clockWise ? "Clockwise" : "CounterClockwise" });
     }
-    
+
     public void RotateGreenSide(bool clockWise)
     {
         RotateSide(cubeState.GreenSideCubes, greenSidePoint, clockWise ? 90 : -90, greenSideRotationAxis);
         cubeState.RotateGreenSide(clockWise);
-        solutionMoves.Add(new[] {"Green", clockWise ? "Clockwise" : "CounterClockwise"});
+        solutionMoves.Add(new[] { "Green", clockWise ? "Clockwise" : "CounterClockwise" });
     }
-    
+
     public void RotateRedSide(bool clockWise)
     {
         RotateSide(cubeState.RedSideCubes, redSidePoint, clockWise ? 90 : -90, redSideRotationAxis);
         cubeState.RotateRedSide(clockWise);
-        solutionMoves.Add(new[] {"Red", clockWise ? "Clockwise" : "CounterClockwise"});
+        solutionMoves.Add(new[] { "Red", clockWise ? "Clockwise" : "CounterClockwise" });
     }
-    
+
     public void RotateBlueSide(bool clockWise)
     {
         RotateSide(cubeState.BlueSideCubes, blueSidePoint, clockWise ? 90 : -90, blueSideRotationAxis);
         cubeState.RotateBlueSide(clockWise);
-        solutionMoves.Add(new[] {"Blue", clockWise ? "Clockwise" : "CounterClockwise"});
+        solutionMoves.Add(new[] { "Blue", clockWise ? "Clockwise" : "CounterClockwise" });
     }
-    
+
     public void RotateWhiteSide(bool clockWise)
     {
         RotateSide(cubeState.WhiteSideCubes, whiteSidePoint, clockWise ? 90 : -90, whiteSideRotationAxis);
         cubeState.RotateWhiteSide(clockWise);
-        solutionMoves.Add(new[] {"White", clockWise ? "Clockwise" : "CounterClockwise"});
+        solutionMoves.Add(new[] { "White", clockWise ? "Clockwise" : "CounterClockwise" });
     }
-    
+
     public void RotateYellowSide(bool clockWise)
     {
         RotateSide(cubeState.YellowSideCubes, yellowSidePoint, clockWise ? 90 : -90, yellowSideRotationAxis);
         cubeState.RotateYellowSide(clockWise);
-        solutionMoves.Add(new[] {"Yellow", clockWise ? "Clockwise" : "CounterClockwise"});
+        solutionMoves.Add(new[] { "Yellow", clockWise ? "Clockwise" : "CounterClockwise" });
     }
 
     public void SnapAllCubes()
@@ -178,9 +185,11 @@ public class Cube : MonoBehaviour
         foreach (Transform cube in transform)
         {
             Vector3 cubePosition = cube.position;
-            cube.position = new Vector3(Mathf.Round(cubePosition.x), Mathf.Round(cubePosition.y), Mathf.Round(cubePosition.z));
+            cube.position = new Vector3(Mathf.Round(cubePosition.x), Mathf.Round(cubePosition.y),
+                Mathf.Round(cubePosition.z));
             var rotation = cube.rotation;
-            rotation = Quaternion.Euler(Mathf.Round(rotation.eulerAngles.x / 90) * 90, Mathf.Round(rotation.eulerAngles.y / 90) * 90, Mathf.Round(rotation.eulerAngles.z / 90) * 90);
+            rotation = Quaternion.Euler(Mathf.Round(rotation.eulerAngles.x / 90) * 90,
+                Mathf.Round(rotation.eulerAngles.y / 90) * 90, Mathf.Round(rotation.eulerAngles.z / 90) * 90);
             cube.rotation = rotation;
         }
     }
@@ -191,34 +200,41 @@ public class Cube : MonoBehaviour
     }
 
 
-    private IEnumerator RotateSideCoroutine(List<GameObject> sideCubes, Vector3 rotationAxis, float rotationAngle, Vector3 rotationPoint)
+    private IEnumerator RotateSideCoroutine(List<GameObject> sideCubes, Vector3 rotationAxis, float rotationAngle,
+        Vector3 rotationPoint)
     {
         //rotate cubes animation
         if (!canRotate)
         {
             yield break;
         }
+
         canRotate = false;
         float time = 0;
         while (time < rotationAnimationTime)
         {
             foreach (GameObject cube in sideCubes)
             {
-                cube.transform.RotateAround(rotationPoint, rotationAxis, rotationAngle * Time.deltaTime / rotationAnimationTime);
+                cube.transform.RotateAround(rotationPoint, rotationAxis,
+                    rotationAngle * Time.deltaTime / rotationAnimationTime);
             }
+
             time += Time.deltaTime;
             yield return null;
         }
+
         //snap cubes to grid
         foreach (GameObject cube in sideCubes)
         {
             Vector3 cubePosition = cube.transform.position;
-            cube.transform.position = new Vector3(Mathf.Round(cubePosition.x), Mathf.Round(cubePosition.y), Mathf.Round(cubePosition.z));
+            cube.transform.position = new Vector3(Mathf.Round(cubePosition.x), Mathf.Round(cubePosition.y),
+                Mathf.Round(cubePosition.z));
             var rotation = cube.transform.rotation;
-            rotation = Quaternion.Euler(Mathf.Round(rotation.eulerAngles.x / 90) * 90, Mathf.Round(rotation.eulerAngles.y / 90) * 90, Mathf.Round(rotation.eulerAngles.z / 90) * 90);
+            rotation = Quaternion.Euler(Mathf.Round(rotation.eulerAngles.x / 90) * 90,
+                Mathf.Round(rotation.eulerAngles.y / 90) * 90, Mathf.Round(rotation.eulerAngles.z / 90) * 90);
             cube.transform.rotation = rotation;
         }
-        Debug.Log("RotateSideCoroutine finished");
+
         UpdateSideCubes();
         canRotate = true;
         yield return null;
@@ -237,6 +253,7 @@ public class Cube : MonoBehaviour
     }
 
     string cameraCurrentSide;
+
     private void PlayerSideRotation()
     {
         // Check for user input to rotate the cube sides
@@ -319,35 +336,35 @@ public class Cube : MonoBehaviour
                     GameObject cube = Instantiate(rubickCubeSingleCube, new Vector3(x, y, z), Quaternion.identity);
                     cube.transform.parent = transform;
                     cube.GetComponent<CubeInfo>().colors = new List<string>();
-                    
+
                     cube.GetComponent<CubeInfo>().colors.Add(x switch
                     {
                         0 => "Blue",
                         2 => "Red",
                         _ => null
                     });
-                    
+
                     cube.GetComponent<CubeInfo>().colors.Add(y switch
                     {
                         0 => "White",
                         2 => "Yellow",
                         _ => null
                     });
-                    
+
                     cube.GetComponent<CubeInfo>().colors.Add(z switch
                     {
                         0 => "Orange",
                         2 => "Green",
                         _ => null
                     });
-                    
-                    cube.GetComponent<CubeInfo>().position = new[] {x, y, z};
-                    
+
+                    cube.GetComponent<CubeInfo>().position = new[] { x, y, z };
+
                     SetMiddleOfSides(x, y, z);
                 }
             }
         }
-        
+
         SetCubeInsideLists();
     }
 
@@ -436,136 +453,214 @@ public class Cube : MonoBehaviour
             }
         }
     }
-    
+
+    public Vector3 GetSideRotationAxis(string side)
+    {
+        switch (side)
+        {
+            case "Orange":
+                return orangeSideRotationAxis;
+            case "Green":
+                return greenSideRotationAxis;
+            case "Red":
+                return redSideRotationAxis;
+            case "Blue":
+                return blueSideRotationAxis;
+            case "White":
+                return whiteSideRotationAxis;
+            case "Yellow":
+                return yellowSideRotationAxis;
+        }
+
+        return Vector3.zero;
+    }
+
+    private void SetMiddleOfSides()
+    {
+    }
+
+    public Vector3 cameraBlueSidePosition = new (1f, 1f, -8);
+    public Vector3 cameraGreenSidePosition = new (1f, 1f, 10);
+    public Vector3 cameraOrangeSidePosition = new (-8, 1f, 1f);
+    public Vector3 cameraRedSidePosition = new (10, 1f, 1f);
+    public Vector3 cameraWhiteSidePosition = new (1f, -8, 1f);
+    public Vector3 cameraYellowSidePosition = new (1f, 10, 1f);
     public string GetCameraCurrentSide(Vector3 cameraPosition)
     {
-        if (cameraPosition == new Vector3(1.25f, 1.25f, -10))
+        if (cameraPosition == cameraBlueSidePosition)
         {
             return "Blue";
         }
-        if (cameraPosition == new Vector3(12.5f, 1.25f, 1.25f))
-        {
-            return "Red";
-        }
-        if (cameraPosition == new Vector3(1.25f, 1.25f, 12.5f))
+        if (cameraPosition == cameraGreenSidePosition)
         {
             return "Green";
         }
-        if (cameraPosition == new Vector3(-10, 1.25f, 1.25f))
+        if (cameraPosition == cameraOrangeSidePosition)
         {
             return "Orange";
         }
-        if (cameraPosition == new Vector3(1.25f, -10, 1.25f))
+        if (cameraPosition == cameraRedSidePosition)
+        {
+            return "Red";
+        }
+        if (cameraPosition == cameraWhiteSidePosition)
         {
             return "White";
         }
-        if (cameraPosition == new Vector3(1.25f, 12.5f, 1.25f))
+        if (cameraPosition == cameraYellowSidePosition)
         {
             return "Yellow";
         }
         return null;
     }
-    
+
     private int optimizationCount = 0;
+
     public void SolveCube()
     {
-        OptimizeSolution();
+        Stack<string[]> movements = new();
+        movements = OptimizeSolution();
+        StartCoroutine(SolveCubeCoroutine(movements));
     }
 
-    private void OptimizeSolution()
+    private IEnumerator SolveCubeCoroutine(Stack<string[]> movements)
     {
-        // for (int i = 0; i < solutionMoves.Count - 1; i++)
-        // {
-        //     if (solutionMoves[i][1] == "Clockwise" && solutionMoves[i + 1][1] == "CounterClockwise")
-        //     {
-        //         solutionMoves.RemoveAt(i);
-        //         solutionMoves.RemoveAt(i);
-        //         i--;
-        //         optimizationCount++;
-        //         Debug.Log("Optimization count: " + optimizationCount);
-        //         
-        //     }
-        //     else if (solutionMoves[i][1] == "CounterClockwise" && solutionMoves[i + 1][1] == "Clockwise")
-        //     {
-        //         solutionMoves.RemoveAt(i);
-        //         solutionMoves.RemoveAt(i);
-        //         i--;
-        //         optimizationCount++;
-        //         Debug.Log("Optimization count: " + optimizationCount);
-        //     }
-        // }
-        //
-        // for (int i = 0; i < solutionMoves.Count - 2; i++)
-        // {
-        //     if (solutionMoves[i][1] == solutionMoves[i + 1][1] && solutionMoves[i + 1][1] == solutionMoves[i + 2][1])
-        //     {
-        //         solutionMoves.RemoveAt(i);
-        //         solutionMoves.RemoveAt(i);
-        //         solutionMoves.RemoveAt(i);
-        //         solutionMoves.Insert(i, new[] {solutionMoves[i][0], solutionMoves[i][1] == "Clockwise" ? "CounterClockwise" : "Clockwise"});
-        //         i--;
-        //         optimizationCount++;
-        //         Debug.Log("Optimization count: " + optimizationCount);
-        //     }
-        // }
-        //
-        // for (int i = 0; i < solutionMoves.Count - 3; i++)
-        // {
-        //     if (solutionMoves[i][1] == solutionMoves[i + 1][1] && solutionMoves[i + 1][1] == solutionMoves[i + 2][1] && solutionMoves[i + 2][1] == solutionMoves[i + 3][1])
-        //     {
-        //         solutionMoves.RemoveAt(i);
-        //         solutionMoves.RemoveAt(i);
-        //         solutionMoves.RemoveAt(i);
-        //         solutionMoves.RemoveAt(i);
-        //         i--;
-        //         optimizationCount++;
-        //         Debug.Log("Optimization count: " + optimizationCount);
-        //     }
-        // }
-        
-        if (optimizationCount > 0)
+        if (movements == null)
         {
-            optimizationCount = 0;
-            OptimizeSolution();
+            yield break;
         }
-        else
+
+        while (movements.Count > 0)
         {
-            Debug.Log("Solution optimized the list of moves");
-            foreach (var move in solutionMoves)
+            string[] movement = movements.Pop();
+            switch (movement[0])
             {
-                Debug.Log(move[0] + " " + move[1]);
+                case "Orange":
+                    RotateOrangeSide(movement[1] == "Clockwise");
+                    break;
+                case "Green":
+                    RotateGreenSide(movement[1] == "Clockwise");
+                    break;
+                case "Red":
+                    RotateRedSide(movement[1] == "Clockwise");
+                    break;
+                case "Blue":
+                    RotateBlueSide(movement[1] == "Clockwise");
+                    break;
+                case "White":
+                    RotateWhiteSide(movement[1] == "Clockwise");
+                    break;
+                case "Yellow":
+                    RotateYellowSide(movement[1] == "Clockwise");
+                    break;
             }
-            StartCoroutine(SolveCubeCoroutine());
+
+            yield return new WaitForSeconds(rotationAnimationTime + rotationAnimationTime / 2);
+            SnapAllCubes();
         }
+
+        solutionMoves.Clear();
     }
 
-    private IEnumerator SolveCubeCoroutine()
+    private Stack<string[]> OptimizeSolution()
     {
-        foreach (var move in solutionMoves)
+        List<string[]> movements = new List<string[]>();
+        for (int i = 0; i < solutionMoves.Count; i++)
+        {
+            if (i < solutionMoves.Count - 1 && solutionMoves[i][0] == solutionMoves[i + 1][0] &&
+                solutionMoves[i][1] != solutionMoves[i + 1][1])
+            {
+                i += 2;
+                continue;
+            }
+
+            //if the same move is repeated 4 times, it is the same as not doing it at all
+            if (i < solutionMoves.Count - 3 &&
+                solutionMoves[i][0] == solutionMoves[i + 1][0] &&
+                solutionMoves[i + 1][0] == solutionMoves[i + 2][0] &&
+                solutionMoves[i + 2][0] == solutionMoves[i + 3][0])
+            {
+                i += 4;
+                continue;
+            }
+
+            //if the same move is repeated 3 times, reverse the direction of one of them and remove the other 2
+            if (i < solutionMoves.Count - 2 &&
+                solutionMoves[i][0] == solutionMoves[i + 1][0] &&
+                solutionMoves[i + 1][0] == solutionMoves[i + 2][0])
+            {
+                movements.Add(new[]
+                    { solutionMoves[i][0], solutionMoves[i][1] == "Clockwise" ? "CounterClockwise" : "Clockwise" });
+                i += 2;
+                continue;
+            }
+
+            if (i < solutionMoves.Count)
+                movements.Add(solutionMoves[i]);
+        }
+
+        return ConvertSolutionToMovements(InvertSolution(movements));
+    }
+
+    private List<string[]> InvertSolution(List<string[]> moves)
+    {
+        List<string[]> invertedSolution = new();
+        foreach (var move in moves)
         {
             switch (move[0])
             {
                 case "Orange":
-                    RotateOrangeSide(move[1] == "Clockwise");
+                    invertedSolution.Add(new[] { "Orange", move[1] == "Clockwise" ? "CounterClockwise" : "Clockwise" });
                     break;
                 case "Green":
-                    RotateGreenSide(move[1] == "Clockwise");
+                    invertedSolution.Add(new[] { "Green", move[1] == "Clockwise" ? "CounterClockwise" : "Clockwise" });
                     break;
                 case "Red":
-                    RotateRedSide(move[1] == "Clockwise");
+                    invertedSolution.Add(new[] { "Red", move[1] == "Clockwise" ? "CounterClockwise" : "Clockwise" });
                     break;
                 case "Blue":
-                    RotateBlueSide(move[1] == "Clockwise");
+                    invertedSolution.Add(new[] { "Blue", move[1] == "Clockwise" ? "CounterClockwise" : "Clockwise" });
                     break;
                 case "White":
-                    RotateWhiteSide(move[1] == "Clockwise");
+                    invertedSolution.Add(new[] { "White", move[1] == "Clockwise" ? "CounterClockwise" : "Clockwise" });
                     break;
                 case "Yellow":
-                    RotateYellowSide(move[1] == "Clockwise");
+                    invertedSolution.Add(new[] { "Yellow", move[1] == "Clockwise" ? "CounterClockwise" : "Clockwise" });
                     break;
             }
-            yield return new WaitForSeconds(rotationAnimationTime + rotationAnimationTime/2);
-            SnapAllCubes();
         }
+
+        return invertedSolution;
+    }
+
+    private Stack<string[]> ConvertSolutionToMovements(List<string[]> moves)
+    {
+        Stack<string[]> movements = new();
+        foreach (var move in moves)
+        {
+            switch (move[0])
+            {
+                case "Orange":
+                    movements.Push(new[] { "Orange", move[1] });
+                    break;
+                case "Green":
+                    movements.Push(new[] { "Green", move[1] });
+                    break;
+                case "Red":
+                    movements.Push(new[] { "Red", move[1] });
+                    break;
+                case "Blue":
+                    movements.Push(new[] { "Blue", move[1] });
+                    break;
+                case "White":
+                    movements.Push(new[] { "White", move[1] });
+                    break;
+                case "Yellow":
+                    movements.Push(new[] { "Yellow", move[1] });
+                    break;
+            }
+        }
+
+        return movements;
     }
 }

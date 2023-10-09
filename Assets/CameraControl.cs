@@ -6,7 +6,7 @@ public class CameraControl : MonoBehaviour
 {
     [SerializeField] private float cameraRotationSpeed = 1f;
     [SerializeField] private float cameraDistance = 8f;
-    private Vector3 lookAtPoint = new(1.25f, 1.25f, 1.25f);
+    private Vector3 lookAtPoint = new(1f, 1f, 1f);
     [SerializeField] private KeyCode rotateCameraLeft = KeyCode.A;
     [SerializeField] private KeyCode rotateCameraRight = KeyCode.D;
     [SerializeField] private KeyCode rotateCameraUp = KeyCode.Z;
@@ -61,38 +61,44 @@ public class CameraControl : MonoBehaviour
         }
     }
 
+    private bool canTurn = true;
     private IEnumerator RotateAround(Vector3 lookAtPoint, Vector3 direction, bool clockwise)
     {
-        
-        //rotate the camera around the cube a whole 90° at the speed of cameraRotationSpeed
-        for (int i = 0; i < 90; i++)
+        if (!canTurn) yield break;
+        canTurn = false;
+        for (float i = 0; i < 90f; i += Time.deltaTime * cameraRotationSpeed)
         {
-            transform.RotateAround(lookAtPoint, direction, cameraRotationSpeed * (clockwise ? -1 : 1));
+            transform.RotateAround(lookAtPoint, direction, clockwise ? -Time.deltaTime * cameraRotationSpeed : Time.deltaTime * cameraRotationSpeed);
             yield return null;
         }
+        
         SnapCameraToSide();
+        canTurn = true;
         cameraCurrentSide = Cube.instance.GetCameraCurrentSide(transform.position);
     }
 
     private void SnapCameraToSide()
     {
-        transform.position = new Vector3(
-            Mathf.Round(transform.position.x / 1.25f) * 1.25f,
-            Mathf.Round(transform.position.y / 1.25f) * 1.25f,
-            Mathf.Round(transform.position.z / 1.25f) * 1.25f);
+        
+        transform.rotation = Quaternion.Euler(
+            Mathf.Round(transform.rotation.eulerAngles.x / 90f) * 90f,
+            Mathf.Round(transform.rotation.eulerAngles.y / 90f) * 90f,
+            Mathf.Round(transform.rotation.eulerAngles.z / 90f) * 90f);
     }
 
 
     private void Update()
     {
         CameraRotate();
+        Debug.DrawRay(transform.position, transform.forward * 10f, Color.red, 0.1f);
+
     }
 
 
 
     private void SetCameraPosition()
     {
-        transform.position = new Vector3(1.25f, 1.25f, -cameraDistance);
+        transform.position = new Vector3(1f, 1f, cameraDistance);
         transform.LookAt(lookAtPoint);
     }
 }
