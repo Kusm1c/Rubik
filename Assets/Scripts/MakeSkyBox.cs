@@ -13,7 +13,7 @@ public class MakeSkyBox
     {
         GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         sphere.transform.position = new Vector3(1.5f, 1.5f, 1.5f);
-        sphere.transform.localScale = new Vector3(30, 30, 30);
+        sphere.transform.localScale = new Vector3(120, 120, 120);
         sphere.transform.rotation = Quaternion.Euler(0, 0, 0);
         sphere.GetComponent<MeshRenderer>().material = cubeMainScript.sphereMaterial;
         Mesh mesh = sphere.GetComponent<MeshFilter>().mesh;

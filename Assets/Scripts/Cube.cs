@@ -85,6 +85,11 @@ public class Cube : MonoBehaviour
         MakeSkyBox.InvertedNormalSphere();
         SettersScript.SetCameraSidePositions();
         ResetChronometer();
+        
+        for (int i = 0; i < 10; i++)
+        {
+            CreateDecoCube();
+        }
     }
     
     public bool hasBeenShuffled = false;
@@ -226,6 +231,53 @@ public class Cube : MonoBehaviour
 
     #endregion
 
+    #region DecoCubes
+    public void CreateDecoCube()
+    {
+        GameObject decoCubeGameObject = new GameObject("DecoCube");
+        decoCubeGameObject.AddComponent<DecoCube>();
+
+        for (int x = 0; x < sideLength; x++)
+        {
+            for (int y = 0; y < sideLength; y++)
+            {
+                for (int z = 0; z < sideLength; z++)
+                {
+                    GameObject cube = Instantiate(rubickCubeSingleCube, new Vector3(x, y, z), Quaternion.identity);
+                    cube.transform.parent = decoCubeGameObject.transform;
+                }
+            }
+        }
+        
+        decoCubeGameObject.transform.position = new Vector3(Random.Range(-30f, 30f), Random.Range(-30f, 30f), Random.Range(-30f, 30f));
+        decoCubeGameObject.transform.rotation = Quaternion.Euler(Random.Range(0f, 360f), Random.Range(0f, 360f), Random.Range(0f, 360f));
+        while (decoCubeGameObject.transform.position.magnitude < 10)
+        {
+            decoCubeGameObject.transform.position = new Vector3(Random.Range(-30f, 30f), Random.Range(-30f, 30f), Random.Range(-30f, 30f));
+        }
+        
+        decoCubeGameObject.GetComponent<DecoCube>().cube = decoCubeGameObject;
+        decoCubeGameObject.GetComponent<DecoCube>().rotationSpeed = Random.Range(1f, 10f);
+        decoCubeGameObject.GetComponent<DecoCube>().movementSpeed = Random.Range(1f, 10f);
+        decoCubeGameObject.GetComponent<DecoCube>().movementDirection = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
+        decoCubeGameObject.GetComponent<DecoCube>().rotationDirection = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
+    }
+
+    #endregion
     
-    
+}
+
+public class DecoCube : MonoBehaviour
+{
+    public GameObject cube;
+    public float rotationSpeed;
+    public float movementSpeed;
+    public Vector3 movementDirection;
+    public Vector3 rotationDirection;
+
+    private void Update()
+    {
+        cube.transform.RotateAround(cube.transform.position, movementDirection, movementSpeed * Time.deltaTime);
+        cube.transform.Rotate(rotationDirection * (rotationSpeed * Time.deltaTime));
+    }
 }
