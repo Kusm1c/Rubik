@@ -66,6 +66,13 @@ public class Cube : MonoBehaviour
     public IEnumerable<Vector3> cameraSidesPositions;
     private Cube cube1;
     [SerializeField] public Material sphereMaterial;
+    
+    [SerializeField] public Material redMaterial;
+    [SerializeField] public Material orangeMaterial;
+    [SerializeField] public Material greenMaterial;
+    [SerializeField] public Material blueMaterial;
+    [SerializeField] public Material whiteMaterial;
+    [SerializeField] public Material yellowMaterial;
 
     private void Awake()
     {
@@ -96,8 +103,84 @@ public class Cube : MonoBehaviour
     public bool isShuffling = false;
     public bool gameStarted = false;
     public int numberOfMovesInSolution = 0;
+    
+    private float colorLerpInSecond = 0.3f;
     void Update()
     {
+        //if redside is Solved then make material red glow and if not then make it not glow using the hdrp
+        if (cubeState.RedSideIsSolved())
+        {
+            //up the emission intensity to 5
+            redMaterial.EnableKeyword("_EMISSION");
+            redMaterial.SetColor("_EmissionColor", Color.red * Mathf.Lerp(0, 5, Time.time * colorLerpInSecond));
+        }
+        else
+        {
+            redMaterial.DisableKeyword("_EMISSION");
+            redMaterial.SetColor("_EmissionColor", Color.red * Mathf.Lerp(5, 0, Time.time * colorLerpInSecond));
+        }
+        
+        if (cubeState.OrangeSideIsSolved())
+        {
+            //up the emission intensity to 5
+            orangeMaterial.EnableKeyword("_EMISSION");
+            orangeMaterial.SetColor("_EmissionColor", new Color(1, 0.5f, 0) * Mathf.Lerp(0, 5, Time.time * colorLerpInSecond));
+        }
+        else
+        {
+            orangeMaterial.DisableKeyword("_EMISSION");
+            orangeMaterial.SetColor("_EmissionColor", new Color(1, 0.5f, 0) * Mathf.Lerp(5, 0, Time.time * colorLerpInSecond));
+        }
+        
+        if (cubeState.GreenSideIsSolved())
+        {
+            //up the emission intensity to 5
+            greenMaterial.EnableKeyword("_EMISSION");
+            greenMaterial.SetColor("_EmissionColor", Color.green * Mathf.Lerp(0, 5, Time.time * colorLerpInSecond));
+        }
+        else
+        {
+            greenMaterial.DisableKeyword("_EMISSION");
+            greenMaterial.SetColor("_EmissionColor", Color.green * Mathf.Lerp(5, 0, Time.time * colorLerpInSecond));
+        }
+        
+        if (cubeState.BlueSideIsSolved())
+        {
+            //up the emission intensity to 5
+            blueMaterial.EnableKeyword("_EMISSION");
+            blueMaterial.SetColor("_EmissionColor", Color.blue * Mathf.Lerp(0, 5, Time.time * colorLerpInSecond));
+        }
+        else
+        {
+            blueMaterial.DisableKeyword("_EMISSION");
+            blueMaterial.SetColor("_EmissionColor", Color.blue * Mathf.Lerp(5, 0, Time.time * colorLerpInSecond));
+        }
+        
+        if (cubeState.WhiteSideIsSolved())
+        {
+            //up the emission intensity to 5
+            whiteMaterial.EnableKeyword("_EMISSION");
+            whiteMaterial.SetColor("_EmissionColor", Color.white * Mathf.Lerp(0, 5, Time.time * colorLerpInSecond));
+        }
+        else
+        {
+            whiteMaterial.DisableKeyword("_EMISSION");
+            whiteMaterial.SetColor("_EmissionColor", Color.white * Mathf.Lerp(5, 0, Time.time * colorLerpInSecond));
+        }
+        
+        if (cubeState.YellowSideIsSolved())
+        {
+            //up the emission intensity to 5
+            yellowMaterial.EnableKeyword("_EMISSION");
+            yellowMaterial.SetColor("_EmissionColor", Color.yellow * Mathf.Lerp(0, 5, Time.time * colorLerpInSecond));
+        }
+        else
+        {
+            yellowMaterial.DisableKeyword("_EMISSION");
+            yellowMaterial.SetColor("_EmissionColor", Color.yellow * Mathf.Lerp(5, 0, Time.time * colorLerpInSecond));
+        }
+        
+        
         numberOfMovesInSolution = Solver.solutionMoves.Count;
         if (isShuffling) return;
         if (!hasBeenShuffled)

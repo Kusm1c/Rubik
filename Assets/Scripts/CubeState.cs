@@ -157,6 +157,90 @@ public class CubeState
             return hash;
         }
     }
+    
+    public bool RedSideIsSolved()
+    {
+        List<GameObject> redSide = GetSideByIndex((int)SideName.Red);
+        for (int i = 0; i < redSide.Count; i++)
+        {
+            if (redSide[i].transform.position != Cube.instance.solvedCubeState.GetSideByIndex((int)SideName.Red)[i].transform.position)
+            {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    public bool OrangeSideIsSolved()
+    {
+        List<GameObject> orangeSide = GetSideByIndex((int)SideName.Orange);
+        for (int i = 0; i < orangeSide.Count; i++)
+        {
+            if (orangeSide[i].transform.position != Cube.instance.solvedCubeState.GetSideByIndex((int)SideName.Orange)[i].transform.position)
+            {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    public bool GreenSideIsSolved()
+    {
+        List<GameObject> greenSide = GetSideByIndex((int)SideName.Green);
+        for (int i = 0; i < greenSide.Count; i++)
+        {
+            if (greenSide[i].transform.position != Cube.instance.solvedCubeState.GetSideByIndex((int)SideName.Green)[i].transform.position)
+            {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    public bool BlueSideIsSolved()
+    {
+        List<GameObject> blueSide = GetSideByIndex((int)SideName.Blue);
+        for (int i = 0; i < blueSide.Count; i++)
+        {
+            if (blueSide[i].transform.position != Cube.instance.solvedCubeState.GetSideByIndex((int)SideName.Blue)[i].transform.position)
+            {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    public bool WhiteSideIsSolved()
+    {
+        List<GameObject> whiteSide = GetSideByIndex((int)SideName.White);
+        for (int i = 0; i < whiteSide.Count; i++)
+        {
+            if (whiteSide[i].transform.position != Cube.instance.solvedCubeState.GetSideByIndex((int)SideName.White)[i].transform.position)
+            {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    public bool YellowSideIsSolved()
+    {
+        List<GameObject> yellowSide = GetSideByIndex((int)SideName.Yellow);
+        for (int i = 0; i < yellowSide.Count; i++)
+        {
+            if (yellowSide[i].transform.position != Cube.instance.solvedCubeState.GetSideByIndex((int)SideName.Yellow)[i].transform.position)
+            {
+                return false;
+            }
+        }
+        
+        return true;
+    }
 
     public bool IsSolved()
     {

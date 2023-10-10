@@ -818,6 +818,12 @@ MonoBehaviour:
   cameraYellowSidePosition: {x: 1, y: 10, z: 1}
   sides: []
   sphereMaterial: {fileID: 2100000, guid: c8b9c37ef0f4ed64998c93a5cbe7a81e, type: 2}
+  redMaterial: {fileID: 2100000, guid: 43d99416f6bfb2f4cbea6e18a4396306, type: 2}
+  orangeMaterial: {fileID: 2100000, guid: 3cf46631ae75ba94eaeb439fc2b21300, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 93f917d5b45a10d42849a259e4a8f089, type: 2}
+  blueMaterial: {fileID: 2100000, guid: 0833c0f6a13eb7644aee763f1f321f4e, type: 2}
+  whiteMaterial: {fileID: 2100000, guid: 2f56c3d7b2a31fd45bf9904212974294, type: 2}
+  yellowMaterial: {fileID: 2100000, guid: 95181bc7d102ead40985f2ad957210ba, type: 2}
   hasBeenShuffled: 0
   isShuffling: 0
   gameStarted: 0
