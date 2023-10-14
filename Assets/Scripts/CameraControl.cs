@@ -13,11 +13,11 @@ public class CameraControl : MonoBehaviour
     [SerializeField] private KeyCode rotateCameraDown = KeyCode.S;
     [SerializeField] private KeyCode rotateCameraClockwise = KeyCode.E;
     [SerializeField] private KeyCode rotateCameraCounterClockwise = KeyCode.Q;
-    
+
     public string cameraCurrentSide;
-    
+
     public static CameraControl instance { get; private set; }
-    
+
     private void Awake()
     {
         instance = this;
@@ -28,7 +28,7 @@ public class CameraControl : MonoBehaviour
         SetCameraPosition();
         cameraCurrentSide = Cube.instance.GettersScript.GetCameraCurrentSide(transform.position);
     }
-    
+
     private void CameraRotate()
     {
         if (Input.GetKeyDown(rotateCameraLeft))
@@ -58,16 +58,18 @@ public class CameraControl : MonoBehaviour
     }
 
     private bool canTurn = true;
+
     private IEnumerator RotateAround(Vector3 lookAtPoint, Vector3 direction, bool clockwise)
     {
         if (!canTurn) yield break;
         canTurn = false;
         for (float i = 0; i < 90f; i += Time.deltaTime * cameraRotationSpeed)
         {
-            transform.RotateAround(lookAtPoint, direction, clockwise ? -Time.deltaTime * cameraRotationSpeed : Time.deltaTime * cameraRotationSpeed);
+            transform.RotateAround(lookAtPoint, direction,
+                clockwise ? -Time.deltaTime * cameraRotationSpeed : Time.deltaTime * cameraRotationSpeed);
             yield return null;
         }
-        
+
         SnapCameraToSide();
         canTurn = true;
         cameraCurrentSide = Cube.instance.GettersScript.GetCameraCurrentSide(transform.position);
@@ -76,7 +78,7 @@ public class CameraControl : MonoBehaviour
     private void SnapCameraToSide()
     {
         transform.position = FindClosestSide();
-        
+
         transform.rotation = Quaternion.Euler(
             Mathf.Round(transform.rotation.eulerAngles.x / 90f) * 90f,
             Mathf.Round(transform.rotation.eulerAngles.y / 90f) * 90f,
@@ -96,7 +98,7 @@ public class CameraControl : MonoBehaviour
                 closestSide = side;
             }
         }
-        
+
         return closestSide;
     }
 
@@ -105,9 +107,7 @@ public class CameraControl : MonoBehaviour
     {
         CameraRotate();
         Debug.DrawRay(transform.position, transform.forward * 10f, Color.red, 0.1f);
-
     }
-
 
 
     private void SetCameraPosition()
@@ -116,4 +116,3 @@ public class CameraControl : MonoBehaviour
         transform.LookAt(lookAtPoint);
     }
 }
-

@@ -18,7 +18,8 @@ public class CubeSpawner
             {
                 for (int z = 0; z < cubeMainScript.sideLength; z++)
                 {
-                    GameObject cube = (GameObject)Object.Instantiate((Object)cubeMainScript.rubickCubeSingleCube, new Vector3(x, y, z), Quaternion.identity);
+                    GameObject cube = (GameObject)Object.Instantiate((Object)cubeMainScript.rubickCubeSingleCube,
+                        new Vector3(x, y, z), Quaternion.identity);
                     cube.transform.parent = cubeMainScript.transform;
                     cube.GetComponent<CubeInfo>().colors = new List<string>();
 

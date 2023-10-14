@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class Solver
 {
-    private Cube cubeMainScript;
+    private readonly Cube cubeMainScript;
     public List<string[]> solutionMoves = new();
     private readonly MakeSkyBox makeSkyBox;
     private readonly ShuffleScript shuffleScript;
     private readonly RotateSideScript rotateSideScript;
     private readonly SettersScript settersScript;
     private readonly GettersScript gettersScript;
+
     public Solver(Cube cubeMainScript)
     {
         this.cubeMainScript = cubeMainScript;
@@ -18,14 +19,11 @@ public class Solver
 
     public IEnumerator SolveCubeCoroutine(Stack<string[]> movements)
     {
-        if (movements == null)
-        {
-            yield break;
-        }
+        if (movements == null) yield break;
 
         while (movements.Count > 0)
         {
-            string[] movement = movements.Pop();
+            var movement = movements.Pop();
             switch (movement[0])
             {
                 case "Orange":
@@ -48,7 +46,8 @@ public class Solver
                     break;
             }
 
-            yield return new WaitForSeconds(cubeMainScript.rotationAnimationTime + cubeMainScript.rotationAnimationTime / 2);
+            yield return new WaitForSeconds(cubeMainScript.rotationAnimationTime +
+                                            cubeMainScript.rotationAnimationTime / 2);
             cubeMainScript.RotateSide1.SnapAllCubes();
         }
 
@@ -66,6 +65,7 @@ public class Solver
                 cubeMainScript.isChronometerRunning = true;
                 cubeMainScript.gameStarted = true;
             }
+
             cubeMainScript.RotateSide1.RotateCurrentSideClockwise();
         }
         else if (Input.GetKeyDown(cubeMainScript.rotateCounterClockwise))
@@ -76,6 +76,7 @@ public class Solver
                 cubeMainScript.isChronometerRunning = true;
                 cubeMainScript.gameStarted = true;
             }
+
             cubeMainScript.RotateSide1.RotateCurrentSideCounterClockwise();
         }
     }
@@ -91,19 +92,19 @@ public class Solver
 
     private Stack<string[]> OptimizeSolution()
     {
-        List<string[]> movements = new List<string[]>();
-        for (int i = 0; i < solutionMoves.Count; i++)
+        var movements = new List<string[]>();
+        for (var i = 0; i < solutionMoves.Count; i++)
         {
             if (i == solutionMoves.Count - 1)
             {
                 movements.Add(solutionMoves[i]);
                 continue;
             }
-            
+
             if (i < solutionMoves.Count - 1 && solutionMoves[i][0] == solutionMoves[i + 1][0] &&
                 solutionMoves[i][1] != solutionMoves[i + 1][1])
             {
-                i ++;
+                i++;
                 Debug.Log("Removed 2 moves");
                 continue;
             }
@@ -126,13 +127,15 @@ public class Solver
             {
                 Debug.Log("Removed 3 moves");
                 i += 2;
-                movements.Add(new[] { solutionMoves[i][0], solutionMoves[i][1] == "Clockwise" ? "CounterClockwise" : "Clockwise" });
+                movements.Add(new[]
+                    { solutionMoves[i][0], solutionMoves[i][1] == "Clockwise" ? "CounterClockwise" : "Clockwise" });
                 continue;
             }
 
             if (i < solutionMoves.Count)
                 movements.Add(solutionMoves[i]);
         }
+
         Debug.Log("Solution optimized with " + (solutionMoves.Count - movements.Count) + " less moves");
         return ConvertSolutionToMovements(InvertSolution(movements));
     }
@@ -141,7 +144,6 @@ public class Solver
     {
         List<string[]> invertedSolution = new();
         foreach (var move in moves)
-        {
             switch (move[0])
             {
                 case "Orange":
@@ -163,7 +165,6 @@ public class Solver
                     invertedSolution.Add(new[] { "Yellow", move[1] == "Clockwise" ? "CounterClockwise" : "Clockwise" });
                     break;
             }
-        }
 
         return invertedSolution;
     }
@@ -172,7 +173,6 @@ public class Solver
     {
         Stack<string[]> movements = new();
         foreach (var move in moves)
-        {
             switch (move[0])
             {
                 case "Orange":
@@ -194,7 +194,6 @@ public class Solver
                     movements.Push(new[] { "Yellow", move[1] });
                     break;
             }
-        }
 
         return movements;
     }
