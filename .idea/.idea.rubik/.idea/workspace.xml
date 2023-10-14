@@ -5,22 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d14307cb-f972-42c9-8c82-ca23bc32b1f7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/DecoCube.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/DecoCube.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/EmissiveScript.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/EmissiveScript.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.rubik/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.rubik/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Objects/New Material 1.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Objects/New Material 1.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Objects/New Material 2.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Objects/New Material 2.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Objects/New Material 3.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Objects/New Material 3.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Objects/New Material 4.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Objects/New Material 4.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Objects/New Material 5.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Objects/New Material 5.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Objects/New Material 6.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Objects/New Material 6.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/CameraControl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/CameraControl.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Cube.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Cube.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/CubeSpawner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/CubeSpawner.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/CubeState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/CubeState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solver.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UserSettings/Layouts/default-2022.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/Layouts/default-2022.dwlt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/EmissiveScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/EmissiveScript.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserSettings/Layouts/CurrentMaximizeLayout.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/Layouts/CurrentMaximizeLayout.dwlt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,7 +109,7 @@
       <workItem from="1696888956917" duration="23000" />
       <workItem from="1696958705733" duration="2285000" />
       <workItem from="1697309355698" duration="102000" />
-      <workItem from="1697309613594" duration="996000" />
+      <workItem from="1697309613594" duration="1799000" />
     </task>
     <servers />
   </component>

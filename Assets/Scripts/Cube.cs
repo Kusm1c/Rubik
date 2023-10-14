@@ -84,7 +84,7 @@ public class Cube : MonoBehaviour
         SettersScript.SetCameraSidePositions();
         ResetChronometer();
 
-        for (var i = 0; i < 10; i++) decoCubee.CreateDecoCube();
+        for (var i = 0; i < 20; i++) decoCubee.CreateDecoCube();
     }
 
     public bool hasBeenShuffled;
